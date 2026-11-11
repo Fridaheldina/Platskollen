@@ -1,0 +1,100 @@
+/*grundinställningar på webbsidan*/
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: roboto, sans-serif;
+}
+
+/*huvudlayout*/
+.app-container {
+    display: flex;
+    height: 100vh;
+    width:100%;
+}
+
+/*sidomeny*/
+.sidebar {
+    width: 250px;
+    flex-shrink: 0;
+    background-color: #ffffff;
+    padding: 20px;
+}
+
+/*styling rubrik*/
+h1 {
+    margin-top: 5px;
+    font-size: 2.5rem;
+    font-family: 'Inter', sans-serif;
+    color: #333333;
+    margin-bottom: 1rem;
+}
+
+/*kartan*/
+.map-container {
+    flex: 1;
+    min-width: 0;
+    height: 100vh;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+/*styling för sökrutan*/
+.search-input {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 16px;
+
+    border: 1px solid #cccccc;
+    border-radius: 25px;
+}
+
+/*styling på knappen*/
+#addPlaceButton {
+    background-color: #68b880;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 25px;
+
+    cursor: pointer;
+}
+
+#addPlaceButton:hover {
+    background-color: #3a8c50;
+}
+
+/*lista med dom sparade platserna*/
+#placesList {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+/*stylinng för vardera plats*/
+.place-item {
+    padding: 15px;
+    background-color: #94bbee;
+    border-bottom: 1px solid #cccccc;
+    border-radius: 20px;
+    margin-top: 6px;
+
+    cursor: pointer;
+}
+
+/*styling för platsnamnet*/
+.place-item h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #ffffff;
+}
+
+/*kategori*/
+.place-item p {
+    margin: 5px 0 0 0;
+    font-size: 14px;
+    color: #d5deeb;
+}

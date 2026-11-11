@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Platskollen</title>
+
+   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+     <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="logo">
+        <h1>Platskollen</h1>
+        <p>Hitta och upptäck platser på kartan</p>
+      </div>
+
+      <div class="search-container">
+        <input type="search" id="searchInput" placeholder="Sök efter platser..." class="search-input">
+      </div>
+
+      <div class="places-container">
+        <ul id="placesList"></ul>
+      </div>
+
+    <button id="addPlaceButton">+ Lägg till plats</button>
+  </aside>
+
+  <main class="map-container">
+    <div id="map"></div>
+  </main>
+
+</div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+
+  <script src="app.js"></script>
+
+</body>
+</html>
