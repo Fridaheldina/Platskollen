@@ -1,15 +1,16 @@
 <!doctype html>
 <html lang="sv">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Platskollen</title>
 
-   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
-     <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <div class="app-container">
@@ -19,27 +20,95 @@
         <p>Hitta och upptäck platser på kartan</p>
       </div>
 
-      <div class="search-container">
-        <input type="search" id="searchInput" placeholder="Sök efter platser..." class="search-input">
+      <section class="sidebar-section">
+        <hr><h2 class="section-title">Sök efter platser</h2>
+
+        <div class="search-container">
+          <input type="search" id="searchInput" placeholder="Sök bland dina sprarade platser" class="search-input">
+        </div>
+
+      </section>
+
+      <section class="sidebar-section places-section">
+
+        <div class="section heading">
+          <hr><h2 class="section-title">Sparade platser</h2>
+        </div>
+
+        <div class="places-container">
+          <ul id="placesList"></ul>
+        </div>
+
+      </section>
+
+      <section class="sidebar-section add-place-section">
+        <hr><h2 class="section-title">Lägg till en ny plats</h2>
+
+        <button id="addPlaceButton">+ Lägg till plats</button>
+        <p class="section-description">Välj en position på kartan för att lägga till en ny plats</p>
+      </section>
+
+    </aside>
+
+    <main class="map-container">
+      <div id="map"></div>
+    </main>
+  </div>
+
+  <!-- Informationsruta som visas när en användare vill lägga till en plats -->
+   <div id="mapInstructionModal" class="modal">
+    <div class = "modal-content">
+      <h2>Lägg till en ny plats</h2>
+      <p>
+        Klicka på kartan för att välja var du vill placera din nya plats.
+      </p>
+
+      <div class="form-buttons">
+        <button type="button" id="instructionOkButton">
+          Jag förstår!
+        </button>
       </div>
+    </div>
+   </div>
 
-      <div class="places-container">
-        <ul id="placesList"></ul>
-      </div>
+  <!-- formulär för att lägga till en plats -->
+  <div id="addPlaceModal" class="modal">
+    <div class="modal-content">
+      <h2>Lägg till en plats</h2>
+      <p>Fyll i informationen om platsen du vill spara</p>
 
-    <button id="addPlaceButton">+ Lägg till plats</button>
-  </aside>
+      <form id="addPlaceForm">
+        <label for="placeName">Namn:</label>
+        <input type="text" id="placeName" required placeholder="Ange platsens namn">
 
-  <main class="map-container">
-    <div id="map"></div>
-  </main>
+        <label for="placeCategory">Kategori:</label>
+        <input type="text" id="placeCategory" required placeholder="Ange platsens kategori">
 
-</div>
+        <label for="placeDescription">Beskrivning:</label>
+        <textarea id="placeDescription" required placeholder="Ange en beskrivning av platsen"></textarea>
+
+        <label for="placeLatitude">Latitud:</label>
+        <input type="number" id="placeLatitude" step="any" readonly required>
+
+        <label for="placeLongitude">Longitud:</label>
+        <input type="number" id="placeLongitude" step="any" readonly required>
+
+
+        <div class="form-buttons">
+          <button type="button" id="cancelButton">Avbryt</button>
+
+          <button type="submit" id="saveButton">Spara</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-     crossorigin=""></script>
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
   <script src="app.js"></script>
 
 </body>
+
 </html>

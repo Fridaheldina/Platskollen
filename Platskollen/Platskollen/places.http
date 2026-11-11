@@ -8,11 +8,11 @@ POST {{host}}/api/places
 Content-Type: application/json
 
 {
-    "name": "Kafé Solgläntan",
-    "category": "fik",
-    "description": "Mysigt kafé med uteservering vid vattnet.",
-    "latitude": 59.3326,
-    "longitude": 18.0649
+    "name": "Hemavan",
+    "category": "resmål",
+    "description": "Turistort med skidåkning och fjällvandring",
+    "latitude": 65.814075,
+    "longitude": 15.101510
 }
 
 ### Hämta en plats
