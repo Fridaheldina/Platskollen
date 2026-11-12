@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 
 <body>
@@ -16,12 +17,13 @@
   <div class="app-container">
     <aside class="sidebar">
       <div class="logo">
-        <h1>Platskollen</h1>
+        <h1><i class="fa-solid fa-map-pin"></i> Platskollen</h1>
         <p>Hitta och upptäck platser på kartan</p>
       </div>
 
       <section class="sidebar-section">
-        <hr><h2 class="section-title">Sök efter platser</h2>
+        <hr>
+        <h2 class="section-title">Sök efter platser</h2>
 
         <div class="search-container">
           <input type="search" id="searchInput" placeholder="Sök bland dina sprarade platser" class="search-input">
@@ -32,7 +34,8 @@
       <section class="sidebar-section places-section">
 
         <div class="section heading">
-          <hr><h2 class="section-title">Sparade platser</h2>
+          <hr>
+          <h2 class="section-title">Sparade platser</h2>
         </div>
 
         <div class="places-container">
@@ -42,7 +45,8 @@
       </section>
 
       <section class="sidebar-section add-place-section">
-        <hr><h2 class="section-title">Lägg till en ny plats</h2>
+        <hr>
+        <h2 class="section-title">Lägg till en ny plats</h2>
 
         <button id="addPlaceButton">+ Lägg till plats</button>
         <p class="section-description">Välj en position på kartan för att lägga till en ny plats</p>
@@ -56,8 +60,8 @@
   </div>
 
   <!-- Informationsruta som visas när en användare vill lägga till en plats -->
-   <div id="mapInstructionModal" class="modal">
-    <div class = "modal-content">
+  <div id="mapInstructionModal" class="modal">
+    <div class="modal-content">
       <h2>Lägg till en ny plats</h2>
       <p>
         Klicka på kartan för att välja var du vill placera din nya plats.
@@ -69,23 +73,32 @@
         </button>
       </div>
     </div>
-   </div>
+  </div>
 
-  <!-- formulär för att lägga till en plats -->
+
+  <!-- Formulär för att lägga till eller ändra en plats -->
   <div id="addPlaceModal" class="modal">
     <div class="modal-content">
       <h2>Lägg till en plats</h2>
-      <p>Fyll i informationen om platsen du vill spara</p>
+      <p>Fyll i informationen nedan om platsen du vill spara</p>
 
       <form id="addPlaceForm">
-        <label for="placeName">Namn:</label>
+        <label for="placeName">Namn: *</label>
         <input type="text" id="placeName" required placeholder="Ange platsens namn">
 
-        <label for="placeCategory">Kategori:</label>
-        <input type="text" id="placeCategory" required placeholder="Ange platsens kategori">
+        <label for="placeCategory">Kategori: *</label>
+        <select id="placeCategory" required>
+          <option value="" disabled selected>Välj en kategori</option>
+          <option value="Boende">Boenden & övernattning</option>
+          <option value="Restaurang">Restaurang</option>
+          <option value="Butik">Livsmedelsbutiker & affärer</option>
+          <option value="Sevärdheter">Utflyktsmål & sevärdheter</option>
+          <option value="Aktiviteter">Aktiviteter & upplevelser</option>
+
+        </select>
 
         <label for="placeDescription">Beskrivning:</label>
-        <textarea id="placeDescription" required placeholder="Ange en beskrivning av platsen"></textarea>
+        <textarea id="placeDescription" placeholder="Ange en beskrivning av platsen"></textarea>
 
         <label for="placeLatitude">Latitud:</label>
         <input type="number" id="placeLatitude" step="any" readonly required>
@@ -93,16 +106,35 @@
         <label for="placeLongitude">Longitud:</label>
         <input type="number" id="placeLongitude" step="any" readonly required>
 
-
         <div class="form-buttons">
           <button type="button" id="cancelButton">Avbryt</button>
-
           <button type="submit" id="saveButton">Spara</button>
         </div>
-
       </form>
     </div>
   </div>
+
+  <!-- Separat bekräftelseruta för borttagning -->
+  <div id="deletePlaceModal" class="modal">
+    <div class="modal-content">
+      <h2>Ta bort plats</h2>
+
+      <p id="deletePlaceMessage">
+        Är du helt säker på att du vill ta bort denna plats?
+      </p>
+
+      <div class="form-buttons">
+        <button type="button" id="cancelDeleteButton">
+          Avbryt
+        </button>
+
+        <button type="button" id="confirmDeleteButton">
+          Ta bort
+        </button>
+      </div>
+    </div>
+  </div>
+
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>

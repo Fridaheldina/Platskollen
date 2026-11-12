@@ -8,7 +8,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 const placesList = document.getElementById('placesList');
 const searchInput = document.getElementById('searchInput');
-const markers = L.layerGroup().addTo(map); 
+const markers = L.layerGroup().addTo(map);
 
 const instructionModal = document.getElementById('mapInstructionModal');
 const instructionOkButton = document.getElementById('instructionOkButton');
@@ -17,17 +17,35 @@ const addPlaceButton = document.getElementById('addPlaceButton');
 const modal = document.getElementById('addPlaceModal');
 const addPlaceForm = document.getElementById('addPlaceForm');
 const cancelButton = document.getElementById('cancelButton');
+// Element till bekräftelserutan
+const deletePlaceModal = document.getElementById('deletePlaceModal');
+const deletePlaceMessage = document.getElementById('deletePlaceMessage');
+const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+const cancelDeleteButton = document.getElementById('cancelDeleteButton');
 
+let deletingPlaceId = null;
 let addingPlace = false;
 let allPlaces = []; //sparar alla platser som hämtas från databasen
+let editingPlaceId = null;
 
 
 //bygger popup rutan med text content så att text från användaren aldrig tolkas som html
 function popupFor(place) {
     const div = document.createElement('div');
+
     const title = document.createElement('strong');
     title.textContent = place.name;
-    div.append(title, document.createElement('br'), place.category);
+
+    const category = document.createElement('p');
+    category.textContent = `Kategori: ${place.category}`;
+
+    const description = document.createElement('p');
+    description.textContent = `Beskrivning: ${place.description}` || 'Ingen beskrivning tillgänglig';
+
+    const coordinates = document.createElement('p');
+    coordinates.textContent = `Koordinater: ${place.latitude}, ${place.longitude}`;
+
+    div.append(title, category, description, coordinates);
     return div;
 }
 
@@ -36,9 +54,10 @@ async function loadPlaces() {
     const response = await fetch('/api/places');
     allPlaces = await response.json();
 
-    showPlaces(allPlaces); //visar alla platser
+    console.log(allPlaces);
 
-}       
+    showPlaces(allPlaces); //visar alla platser
+}
 
 //visar platser i listan på kartan
 function showPlaces(places) {
@@ -50,7 +69,7 @@ function showPlaces(places) {
     places.forEach(place => {
         const marker = L.marker([place.latitude, place.longitude]).addTo(markers);
 
-         // Popup med platsens information
+        // Popup med platsens information
         marker.bindPopup(popupFor(place));
 
         // Skapar ett listelement
@@ -65,8 +84,61 @@ function showPlaces(places) {
         const category = document.createElement('p');
         category.textContent = place.category;
 
-        // Lägger till informationen i listan
-        listItem.append(name, category);
+        // Samlar namn och kategori i en egen container
+        const placeInfo = document.createElement('div');
+        placeInfo.append(name, category);
+
+        // Skapar en container för kapparna
+        const actions = document.createElement('div');
+        actions.classList.add('place-actions');
+
+        //skapar ändraknappen
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Ändra';
+
+        //skapar ta bortknappen
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Ta bort';
+
+        //lägger till knapparna i containern
+        actions.append(editButton, deleteButton);
+
+        //klicket på ändraknappen
+        editButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+
+            //sparar vilken plats som ska ändras
+            editingPlaceId = place.id;
+
+            //fyller formuläret med platsens befintliga information
+            document.getElementById('placeName').value = place.name;
+            document.getElementById('placeCategory').value = place.category;
+            document.getElementById('placeDescription').value = place.description;
+            document.getElementById('placeLatitude').value = place.latitude;
+            document.getElementById('placeLongitude').value = place.longitude;
+
+            //ändrar rubriken på formuläret
+            modal.querySelector('h2').textContent = 'Ändra plats';
+            modal.classList.add('show');
+        })
+
+        //klicka på ta bort knappen
+        deleteButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+
+            // Sparar vilken plats som ska tas bort
+            deletingPlaceId = place.id;
+
+            // Visar vilken plats användaren vill ta bort
+            deletePlaceMessage.textContent =
+                `Vill du verkligen ta bort ${place.name}?`;
+
+            // Öppnar bekräftelserutan
+            deletePlaceModal.classList.add('show');
+        });
+
+        //lägger till information om knappar i "plats-kortet"
+        listItem.append(placeInfo, actions);
 
         placesList.appendChild(listItem);
 
@@ -85,6 +157,28 @@ function showPlaces(places) {
     });
 }
 
+//användaren bekräftar borttagningen
+confirmDeleteButton.addEventListener('click', async () => {
+    const response = await fetch(`/api/places/${deletingPlaceId}`, {
+        method: 'DELETE'
+    });
+
+    if (response.ok) {
+        deletePlaceModal.classList.remove('show');
+        deletingPlaceId = null;
+
+        await loadPlaces();
+    } else {
+        alert('Det gick inte att ta bort platsen.');
+    }
+});
+
+//användaren avbryter borttagningen
+cancelDeleteButton.addEventListener('click', () => {
+    deletePlaceModal.classList.remove('show');
+    deletingPlaceId = null;
+});
+
 //lyssnar efter vad användaren skriver i sökfältet 
 searchInput.addEventListener('input', () => {
     const searchText = searchInput.value.toLowerCase();
@@ -97,7 +191,7 @@ searchInput.addEventListener('input', () => {
     showPlaces(filteredPlaces);
 });
 
-        
+
 
 //klicka på knappen : lägg till plats
 addPlaceButton.addEventListener('click', () => {
@@ -117,25 +211,33 @@ instructionOkButton.addEventListener('click', () => {
 //klicka på kartan
 map.on('click', (e) => {
     if (!addingPlace) return;
-    document.getElementById('placeLatitude').value = e.latlng.lat;
 
+    editingPlaceId = null;
+    addPlaceForm.reset();
+    modal.querySelector('h2').textContent = 'Lägg till en plats';
+
+    document.getElementById('placeLatitude').value = e.latlng.lat;
     document.getElementById('placeLongitude').value = e.latlng.lng;
 
     modal.classList.add('show');
 
     addingPlace = false;
-});    
+});
 
 //knappen för att avbryta lägg till plats
 cancelButton.addEventListener('click', () => {
     modal.classList.remove('show');
     addPlaceForm.reset();
+    editingPlaceId = null;
+
+    modal.querySelector('h2').textContent = 'Lägg till en plats';
 });
 
 //knappen för att spara platsen
 addPlaceForm.addEventListener('submit', async (e) => {
     //förhindrar att sidan laddas om
     e.preventDefault();
+
 
     //hämtar informationen från formuläret
     const newPlace = {
@@ -146,9 +248,16 @@ addPlaceForm.addEventListener('submit', async (e) => {
         longitude: parseFloat(document.getElementById('placeLongitude').value)
     };
 
+    //kontrollerar om vi sk askapa eller ändra en plats
+    const url = editingPlaceId
+        ? `/api/places/${editingPlaceId}`
+        : `/api/places`;
+
+    const method = editingPlaceId ? 'PUT' : 'POST';
+
     //skickar informationen till API:et
-    const response = await fetch('/api/places', {
-        method: 'POST',
+    const response = await fetch(url, {
+        method: method,
         headers: {
             'Content-Type': 'application/json'
         },
@@ -159,11 +268,11 @@ addPlaceForm.addEventListener('submit', async (e) => {
     if (response.ok) {
         modal.classList.remove('show');
         addPlaceForm.reset();
+        editingPlaceId = null;
 
-        //laddar om sidan för att visa den nya platsen
-        window.location.reload();
+        await loadPlaces();
     } else {
-        alert('Det gick inte att lägga till platsen... Vänligen fFörsök igen.');
+        alert('Det gick inte att spara platsen... Vänligen försök igen.');
     }
 });
 

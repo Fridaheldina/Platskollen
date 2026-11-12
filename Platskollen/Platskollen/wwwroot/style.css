@@ -15,7 +15,7 @@ html, body {
 
 /*sidomeny*/
 .sidebar {
-    width: 300px;
+    width: 350px;
     flex-shrink: 0;
     background-color: #ffffff;
     padding: 20px;
@@ -31,7 +31,7 @@ html, body {
     text-transform: uppercase;
     color: #52665A;
     margin: 0 0 12px 0;
-    margin-top: 10px;
+    margin-top: 18px;
 }
 
 /*rubriki och sparade platser*/
@@ -91,7 +91,7 @@ h1 {
 /*styling på knappen*/
 #addPlaceButton {
     width: 100%;
-    background-color: #609B76;
+    background-color: #527B96;
     color: white;
     padding: 10px 20px;
     font-size: 14px;
@@ -103,7 +103,7 @@ h1 {
 }
 
 #addPlaceButton:hover {
-    background-color: #4D835F;
+    background-color: #405F76;
 }
 
 /*lista med dom sparade platserna*/
@@ -116,11 +116,26 @@ h1 {
 /*stylinng för vardera plats*/
 .place-item {
     padding: 16px;
-    background-color: #EEF3EF;
+    background-color: #EAF0F5;
     border-radius: 12px;
     margin-top: 6px;
 
     cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.place-item i {
+    color: #527B96;
+    font-size: 20px;
+    margin-left: 10px;
+    flex-shrink: 0;
+}
+
+.place-item:hover {
+    background-color: #a9cbe4;
 }
 
 /*styling för platsnamnet*/
@@ -129,7 +144,7 @@ h1 {
     font-size: 15px;
     font-weight: 600;
     font-family: Arial, Helvetica, sans-serif;
-    color: #344b3e;
+    color: #34495A;
 }
 
 /*kategori*/
@@ -137,7 +152,38 @@ h1 {
     margin: 5px 0 0 0;
     font-size: 13px;
     font-family: Arial, Helvetica, sans-serif;
-    color: #78877D;
+    color: #64798A;
+}
+
+/*styling för knapp inne i plats-korten*/
+.place-actions {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.place-actions button {
+    border: none;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+/*ändra knappen*/
+.place-actions button:first-child {
+    background-color: #c8deee;
+    color: #34495A;
+}
+
+/* Ta bort-knappen */
+.place-actions button:last-child {
+    background-color: #f7d9d9;
+    color: #984646;
+}
+
+.place-actions button:hover {
+    opacity: 0.8;
 }
 
 /*styla formuläret för att lägga till en plats på kartan*/
@@ -185,7 +231,8 @@ h1 {
 }    
 
 .modal-content input,
-.modal-content textarea {
+.modal-content textarea,
+.modal-content select {
     width: 100%;
     box-sizing: border-box;
     padding: 8px;
@@ -194,6 +241,7 @@ h1 {
     font-family: Arial, sans-serif;
     font-size: 14px;
 }
+
 
 .modal-content textarea {
     min-height: 60px;
@@ -222,31 +270,53 @@ h1 {
 }
 
 #cancelButton {
-    background-color: #eee;
+    background-color: #f7d9d9;
 }
 
 #saveButton {
-    background-color: #68b880;
+    background-color: #527B96;
     color: white;
 }
 
 #saveButton:hover {
-    background-color: #3a8c50;
+    background-color: #405F76;
 }
 
 #cancelButton:hover {
-    background-color: #ccc;
+    background-color: #f1bcbc;
 }
 
 #instructionOkButton {
-    background-color: #609B76;
+    background-color: #527B96;
     color: white;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 600;
 }
 
 #instructionOkButton:hover {
-    background-color: #4D835F;
+    background-color: #405F76;
 }
 
+/*mellanrum mellan rubrik + underrubrik till söksektionen*/
+.logo p{
+    margin-bottom: 1.5rem;
+    margin-top: 0.2rem;
+}
 
+/* Bekräftelseruta för borttagning */
+#confirmDeleteButton {
+    background-color: #527B96;
+    color: white;
+}
+
+#confirmDeleteButton:hover {
+    background-color: #405F76;
+}
+
+#cancelDeleteButton {
+    background-color: #f7d9d9;
+}
+
+#cancelDeleteButton:hover {
+    background-color: #f1bcbc;
+}
