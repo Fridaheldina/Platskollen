@@ -55,6 +55,37 @@
     </aside>
 
     <main class="map-container">
+      <div class="map-filters">
+
+        <button class="filter-button active" data-category="all">
+          Alla
+        </button>
+
+        <button class="filter-button" data-category="Boenden">
+          Boenden
+        </button>
+
+        <button class="filter-button" data-category="Restaurang">
+          Restauranger
+        </button>
+
+        <button class="filter-button" data-category="Butik">
+          Butiker
+        </button>
+
+        <button class="filter-button" data-category="Utflyktsmål">
+          Utflyktsmål
+        </button>
+
+        <button class="filter-button" data-category="Aktiviteter">
+          Aktiviteter
+        </button>
+
+        <button class="filter-button" data-category="Flygplats">
+          Flygplatser
+        </button>
+
+      </div>
       <div id="map"></div>
     </main>
   </div>
@@ -89,11 +120,12 @@
         <label for="placeCategory">Kategori: *</label>
         <select id="placeCategory" required>
           <option value="" disabled selected>Välj en kategori</option>
-          <option value="Boende">Boenden & övernattning</option>
+          <option value="Boenden">Boenden & övernattning</option>
           <option value="Restaurang">Restaurang</option>
           <option value="Butik">Livsmedelsbutiker & affärer</option>
-          <option value="Sevärdheter">Utflyktsmål & sevärdheter</option>
+          <option value="Utflyktsmål">Utflyktsmål & sevärdheter</option>
           <option value="Aktiviteter">Aktiviteter & upplevelser</option>
+          <option value="Flygplats">Flygplats</option>
 
         </select>
 

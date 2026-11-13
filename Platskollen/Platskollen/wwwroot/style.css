@@ -71,11 +71,54 @@ h1 {
     flex: 1;
     min-width: 0;
     height: 100vh;
+    position: relative;
 }
 
 #map {
     height: 100%;
     width: 100%;
+}
+
+/* Filterknappar ovanför kartan */
+.map-filters {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 1000;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Grundutseende för filterknapparna */
+.filter-button {
+    background-color: white;
+    color: #34495A;
+
+    border: 1px solid #cccccc;
+    border-radius: 25px;
+
+    padding: 10px 18px;
+
+    font-size: 13px;
+    font-family: Arial, Helvetica, sans-serif;
+
+    cursor: pointer;
+
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+/* Hover-effekt */
+.filter-button:hover {
+    background-color: #EAF0F5;
+}
+
+/* Aktiv filterknapp */
+.filter-button.active {
+    background-color: #527B96;
+    color: white;
+    border-color: #527B96;
 }
 
 /*styling för sökrutan*/
@@ -297,8 +340,18 @@ h1 {
     background-color: #405F76;
 }
 
+/*centrerar rubrik och underrubrik*/
+.logo {
+    width: 100%;
+}
+
+.logo h1 {
+    text-align: center;
+}
+
 /*mellanrum mellan rubrik + underrubrik till söksektionen*/
 .logo p{
+    text-align: center;
     margin-bottom: 1.5rem;
     margin-top: 0.2rem;
 }

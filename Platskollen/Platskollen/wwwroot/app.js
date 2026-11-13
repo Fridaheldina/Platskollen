@@ -22,7 +22,10 @@ const deletePlaceModal = document.getElementById('deletePlaceModal');
 const deletePlaceMessage = document.getElementById('deletePlaceMessage');
 const confirmDeleteButton = document.getElementById('confirmDeleteButton');
 const cancelDeleteButton = document.getElementById('cancelDeleteButton');
+//hämtar alla filterknappar
+const filterButtons = document.querySelectorAll('.filter-button');
 
+let selectedCategories = []; //sparar användarens valda kategorier
 let deletingPlaceId = null;
 let addingPlace = false;
 let allPlaces = []; //sparar alla platser som hämtas från databasen
@@ -56,8 +59,88 @@ async function loadPlaces() {
 
     console.log(allPlaces);
 
-    showPlaces(allPlaces); //visar alla platser
+    applyFilters(); //visar alla platser
 }
+
+// Filtrerar platser baserat på sökning och kategori
+function applyFilters() {
+
+    const searchText = searchInput.value.toLowerCase().trim();
+
+    const filteredPlaces = allPlaces.filter(place => {
+
+        // Kontrollerar sökningen
+        const matchesSearch =
+            place.name.toLowerCase().includes(searchText) ||
+            place.category.toLowerCase().includes(searchText);
+
+        // Kontrollerar vald kategori
+        const matchesCategory =
+            selectedCategories.length === 0 ||
+            selectedCategories.includes(place.category);
+
+        return matchesSearch && matchesCategory;
+    });
+
+    // Visar endast de platser som matchar filtreringen
+    showPlaces(filteredPlaces);
+}
+
+// Lyssnar efter klick på filterknapparna
+filterButtons.forEach(button => {
+
+    button.addEventListener('click', () => {
+
+        const category = button.dataset.category;
+        console.log("Vald kategori:", category);
+
+        // Om användaren väljer Alla
+        if (category === 'all') {
+
+            selectedCategories = [];
+
+        } else {
+
+            // Tar bort Alla som aktivt val
+            selectedCategories = selectedCategories.filter(
+                selected => selected !== 'all'
+            );
+
+            // Om kategorin redan är vald tas den bort
+            if (selectedCategories.includes(category)) {
+
+                selectedCategories = selectedCategories.filter(
+                    selected => selected !== category
+                );
+
+            } else {
+
+                // Annars läggs kategorin till
+                selectedCategories.push(category);
+
+            }
+        }
+
+        // Uppdaterar vilka knappar som är aktiva
+        filterButtons.forEach(filterButton => {
+
+            const filterCategory = filterButton.dataset.category;
+
+            filterButton.classList.toggle(
+                'active',
+                filterCategory === 'all'
+                    ? selectedCategories.length === 0
+                    : selectedCategories.includes(filterCategory)
+            );
+
+        });
+
+        // Uppdaterar kartan och listan
+        applyFilters();
+
+    });
+
+});
 
 //visar platser i listan på kartan
 function showPlaces(places) {
@@ -179,19 +262,8 @@ cancelDeleteButton.addEventListener('click', () => {
     deletingPlaceId = null;
 });
 
-//lyssnar efter vad användaren skriver i sökfältet 
-searchInput.addEventListener('input', () => {
-    const searchText = searchInput.value.toLowerCase();
-
-    const filteredPlaces = allPlaces.filter(place =>
-        place.name.toLowerCase().includes(searchText) ||
-        place.category.toLowerCase().includes(searchText)
-    );
-
-    showPlaces(filteredPlaces);
-});
-
-
+/// Lyssnar efter vad användaren skriver i sökfältet
+searchInput.addEventListener('input', applyFilters);
 
 //klicka på knappen : lägg till plats
 addPlaceButton.addEventListener('click', () => {
