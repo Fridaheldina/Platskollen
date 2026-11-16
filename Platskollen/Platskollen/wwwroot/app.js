@@ -10,6 +10,29 @@ const placesList = document.getElementById('placesList');
 const searchInput = document.getElementById('searchInput');
 const markers = L.layerGroup().addTo(map);
 
+//väljer färg på kartnålen beroende på vilken kategori som platsen tillhör
+function getMarkerIcon(category){
+    const colors = {
+        'Boenden': 'blue',
+        'Restaurang': 'red',
+        'Butik': 'orange',
+        'Utflyktsmål': 'green',
+        'Aktiviteter': 'violet',
+        'Flygplats': 'grey'
+    };
+
+    const color = colors[category] || 'blue';
+
+    return L.icon({
+        iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+}
+
 const instructionModal = document.getElementById('mapInstructionModal');
 const instructionOkButton = document.getElementById('instructionOkButton');
 //hämtar formulärets element från HTML
@@ -150,7 +173,9 @@ function showPlaces(places) {
     markers.clearLayers();
     //går igenom alla platser och lägger till dem i listan och på kartan
     places.forEach(place => {
-        const marker = L.marker([place.latitude, place.longitude]).addTo(markers);
+        const marker = L.marker([place.latitude, place.longitude], {
+            icon: getMarkerIcon(place.category)}
+        ).addTo(markers);
 
         // Popup med platsens information
         marker.bindPopup(popupFor(place));

@@ -14,7 +14,7 @@ using (var scope = app.Services.CreateScope())
     scope.ServiceProvider.GetRequiredService<PlaceDb>().Database.EnsureCreated();
 }
 
-//Serverar index.html och app.js från mappen wwwroot (steg6)
+//Serverar index.html och app.js från mappen wwwroot
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
