@@ -15,7 +15,7 @@ html, body {
 
 /*sidomeny*/
 .sidebar {
-    width: 350px;
+    width: 450px;
     flex-shrink: 0;
     background-color: #ffffff;
     padding: 20px;
@@ -64,6 +64,11 @@ h1 {
     font-family: Arial, Helvetica, sans-serif;
     color: #344b3e;
     margin-bottom: 0.2rem;
+}
+
+/*stylingen för ikonen bredvid rubriken*/
+.pin-ikon {
+    color: #527B96;
 }
 
 /*kartan*/
@@ -158,7 +163,7 @@ h1 {
 
 /*stylinng för vardera plats*/
 .place-item {
-    padding: 18px;
+    padding: 20px;
     background-color: #EAF0F5;
     border-radius: 12px;
     margin-top: 6px;
@@ -196,6 +201,55 @@ h1 {
     font-size: 13px;
     font-family: Arial, Helvetica, sans-serif;
     color: #64798A;
+}
+
+/*grundutseende för kategorierna*/
+.place-category {
+    display: inline-block;
+    padding: 3px 9px;
+    border: none;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 5px;
+    border: 1px solid;
+}
+
+/*färgerna för vardera kategori*/
+.category-boenden {
+    color: #7635A0;
+    background-color: #F0E2F8;
+    border-color: #D585E8;
+}
+
+.category-restaurang {
+    color: #C93636;
+    background-color: #FCE4E4;
+    border-color: #F2BDBD;
+}
+
+.category-butik {
+    color: #B85D12;
+    background-color: #FCEBD9;
+    border-color: #F0CCA6;
+}
+
+.category-utflyktsmål {
+    color: #20834D;
+    background-color: #DDF3E6;
+    border-color: #B4DFC4;
+}
+
+.category-aktiviteter {
+    color: #2475B5;
+    background-color: #DFEDFA;
+    border-color: #87D5EF;
+}
+
+.category-flygplats {
+    color: #586574;
+    background-color: #E2E8EE;
+    border-color: #C5D0DB;
 }
 
 /*styling för knapp inne i plats-korten*/
@@ -374,6 +428,54 @@ h1 {
     background-color: #f1bcbc;
 }
 
-.pin-ikon {
-    color: #527B96;
+/*scrollfunktion för listan på dom sparade platserna*/
+.places-container {
+    max-height: 800px;
+    overflow: auto;
+}
+
+/*gemensam stling för kategoriknapparna*/
+.filter-button {
+    padding: 8px 16px;
+    border: 1px solid;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.filter-boenden {
+    color: #7635A0;
+    background-color: #F0E2F8;
+    border-color: #D585E8;
+}
+
+.filter-restaurang {
+    color: #C93636;
+    background-color: #FCE4E4;
+    border-color: #F2BDBD;
+}
+
+.filter-butik {
+    color: #B85D12;
+    background-color: #FCEBD9;
+    border-color: #F0CCA6;
+}
+
+.filter-utflyktsmål {
+    color: #20834D;
+    background-color: #DDF3E6;
+    border-color: #B4DFC4;                                           
+}
+
+.filter-aktiviteter {
+    color: #2475B5;
+    background-color: #DFEDFA;
+    border-color: #87D5EF;
+}
+
+.filter-flygplats {  
+    color: #586574;
+    background-color: #E2E8EE;
+    border-color: #C5D0DB;
 }

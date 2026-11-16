@@ -11,13 +11,13 @@ const searchInput = document.getElementById('searchInput');
 const markers = L.layerGroup().addTo(map);
 
 //väljer färg på kartnålen beroende på vilken kategori som platsen tillhör
-function getMarkerIcon(category){
+function getMarkerIcon(category) {
     const colors = {
-        'Boenden': 'blue',
+        'Boenden': 'violet',
         'Restaurang': 'red',
         'Butik': 'orange',
         'Utflyktsmål': 'green',
-        'Aktiviteter': 'violet',
+        'Aktiviteter': 'blue',
         'Flygplats': 'grey'
     };
 
@@ -174,7 +174,8 @@ function showPlaces(places) {
     //går igenom alla platser och lägger till dem i listan och på kartan
     places.forEach(place => {
         const marker = L.marker([place.latitude, place.longitude], {
-            icon: getMarkerIcon(place.category)}
+            icon: getMarkerIcon(place.category)
+        }
         ).addTo(markers);
 
         // Popup med platsens information
@@ -191,6 +192,9 @@ function showPlaces(places) {
         // Platsens kategori
         const category = document.createElement('p');
         category.textContent = place.category;
+        //lägger till css klasser för kategoriernas uteende
+        category.classList.add('place-category');
+        category.classList.add(`category-${place.category.toLowerCase()}`);
 
         // Samlar namn och kategori i en egen container
         const placeInfo = document.createElement('div');
