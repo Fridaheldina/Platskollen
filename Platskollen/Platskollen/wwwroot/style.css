@@ -252,6 +252,12 @@ h1 {
     border-color: #C5D0DB;
 }
 
+.category-svampställe {
+    color: #A87519;
+    background-color: #eed9a7;
+    border-color: #D5AE58;
+}
+
 /*styling för knapp inne i plats-korten*/
 .place-actions {
     display: flex;
@@ -478,4 +484,10 @@ h1 {
     color: #586574;
     background-color: #E2E8EE;
     border-color: #C5D0DB;
+}
+
+.filter-svampställe {
+    color: #A87519;
+    background-color: #eed9a7;
+    border-color: #D5AE58;
 }

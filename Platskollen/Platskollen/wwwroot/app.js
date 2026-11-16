@@ -18,7 +18,8 @@ function getMarkerIcon(category) {
         'Butik': 'orange',
         'Utflyktsmål': 'green',
         'Aktiviteter': 'blue',
-        'Flygplats': 'grey'
+        'Flygplats': 'grey',
+        'Svampställe': 'gold'
     };
 
     const color = colors[category] || 'blue';
