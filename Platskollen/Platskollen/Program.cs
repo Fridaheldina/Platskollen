@@ -32,11 +32,34 @@ places.MapGet("/{id}", async (int id, PlaceDb db) =>
     return place is not null
     ? Results.Ok(place)
     : Results.NotFound();
-});    
+});
 
 //skapa plats
 places.MapPost("/", async (Place place, PlaceDb db) =>
 {
+
+    //kontrollerar vilken typ av objekt som skickas
+    if (place.GeometryType == "Point")
+    {
+        if (place.Latitude == null || place.Longitude == null)
+        {
+            return Results.BadRequest("En punkt måste ha latitude och longitud");
+        }
+        place.Wkt = null;
+    }
+    else if (place.GeometryType == "Polygon")
+    {
+        if (string.IsNullOrWhiteSpace(place.Wkt))
+        {
+            return Results.BadRequest("En polygon måste ha WKT-information");
+        }
+        place.Latitude = null;
+        place.Longitude = null;
+    }
+    else
+    {
+        return Results.BadRequest("Ogiltig geometrityp");
+    }
     place.CreatedAt = DateTime.UtcNow;
     db.Places.Add(place);
     await db.SaveChangesAsync();
@@ -46,7 +69,7 @@ places.MapPost("/", async (Place place, PlaceDb db) =>
 //uppdatera en plats
 places.MapPut("/{id}", async (int id, Place input, PlaceDb db) =>
 {
-    var place = await db.Places.FindAsync (id);
+    var place = await db.Places.FindAsync(id);
     if (place is null) return Results.NotFound();
 
     place.Name = input.Name;

@@ -8,9 +8,11 @@
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-color-markers/1.0.0/css/leaflet-color-markers.min.css">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-color-markers/1.0.0/css/leaflet-color-markers.min.css">
 </head>
 
 <body>
@@ -49,8 +51,15 @@
         <hr>
         <h2 class="section-title">Lägg till en ny plats</h2>
 
-        <button id="addPlaceButton">+ Lägg till plats</button>
+        <button id="addPlaceButton" class="add-place-button">
+          <i class="fa-solid fa-location-dot"></i>
+          Lägg till plats</button>
         <p class="section-description">Välj en position på kartan för att lägga till en ny plats</p>
+
+        <button id="drawPolygonButton" class="draw-polygon-button">
+          <i class="fa-solid fa-draw-polygon"></i>
+          Rita område på kartan</button>
+        <p class="section-description">Markera ut ett område på kartan för att lägga till ett nytt område</p>
       </section>
 
     </aside>
@@ -139,10 +148,10 @@
         <textarea id="placeDescription" placeholder="Ange en beskrivning av platsen"></textarea>
 
         <label for="placeLatitude">Latitud:</label>
-        <input type="number" id="placeLatitude" step="any" readonly required>
+        <input type="number" id="placeLatitude" step="any" readonly>
 
         <label for="placeLongitude">Longitud:</label>
-        <input type="number" id="placeLongitude" step="any" readonly required>
+        <input type="number" id="placeLongitude" step="any" readonly>
 
         <div class="form-buttons">
           <button type="button" id="cancelButton">Avbryt</button>
@@ -176,6 +185,7 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
 
   <script src="app.js"></script>
 

@@ -137,7 +137,7 @@ h1 {
 }
 
 /*styling på knappen*/
-#addPlaceButton {
+.add-place-button {
     width: 100%;
     background-color: #527B96;
     color: white;
@@ -150,7 +150,7 @@ h1 {
     cursor: pointer;
 }
 
-#addPlaceButton:hover {
+.add-place-button:hover {
     background-color: #405F76;
 }
 
@@ -163,7 +163,7 @@ h1 {
 
 /*stylinng för vardera plats*/
 .place-item {
-    padding: 20px;
+    padding: 16px 18px;
     background-color: #EAF0F5;
     border-radius: 12px;
     margin-top: 6px;
@@ -173,13 +173,7 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
-
-.place-item i {
-    color: #527B96;
-    font-size: 20px;
-    margin-left: 10px;
-    flex-shrink: 0;
+    gap: 12px;
 }
 
 .place-item:hover {
@@ -271,6 +265,7 @@ h1 {
     padding: 8px 10px;
     font-size: 12px;
     cursor: pointer;
+    font-weight: 600;
 }
 
 /*ändra knappen*/
@@ -436,7 +431,7 @@ h1 {
 
 /*scrollfunktion för listan på dom sparade platserna*/
 .places-container {
-    max-height: 800px;
+    max-height: 750px;
     overflow: auto;
 }
 
@@ -490,4 +485,66 @@ h1 {
     color: #A87519;
     background-color: #eed9a7;
     border-color: #D5AE58;
+}
+
+/*styling på "ritra område på kartan" knappen*/
+.draw-polygon-button {
+    width: 100%;
+    background-color: #527B96;
+    color: white;
+    padding: 15px 20px;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    border: none;
+    border-radius: 25px;
+
+    cursor: pointer;
+}
+
+.draw-polygon-button:hover {
+    background-color: #405F76;
+}
+
+/*ikon för punkplatser och polygoner*/
+.place-type-icon {
+    color: #527B96;
+    font-size: 15px;
+    width: 18px;
+    min-width: 18px;
+    text-align: center;
+    margin: 0;
+}
+
+/*information om platsen*/
+.place-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+/*platsnamn och ikon*/
+.place-info h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #34495A;
+}
+
+/* Kategorietiketten */
+.place-info .place-category {
+    align-self: flex-start;
+    margin: 0 0 0 26px;
+}
+
+/* Knapparna */
+.place-actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-shrink: 0;
 }

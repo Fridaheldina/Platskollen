@@ -10,6 +10,13 @@ const placesList = document.getElementById('placesList');
 const searchInput = document.getElementById('searchInput');
 const markers = L.layerGroup().addTo(map);
 
+//grupp som håller reda på dom ritade polygonerna
+const drawnItems = new L.FeatureGroup();
+map.addLayer(drawnItems);
+
+//hämta knappaen för att rita polygoner
+const drawPolygonButton = document.getElementById('drawPolygonButton');
+
 //väljer färg på kartnålen beroende på vilken kategori som platsen tillhör
 function getMarkerIcon(category) {
     const colors = {
@@ -55,6 +62,9 @@ let addingPlace = false;
 let allPlaces = []; //sparar alla platser som hämtas från databasen
 let editingPlaceId = null;
 
+let pendingPolygonWkt = null;
+let pendingPolygonLayer = null;
+
 
 //bygger popup rutan med text content så att text från användaren aldrig tolkas som html
 function popupFor(place) {
@@ -67,10 +77,16 @@ function popupFor(place) {
     category.textContent = `Kategori: ${place.category}`;
 
     const description = document.createElement('p');
-    description.textContent = `Beskrivning: ${place.description}` || 'Ingen beskrivning tillgänglig';
-
+    
+    description.textContent = `Beskrivning: ${place.description || 'Ingen beskrivning tillgänglig'}`;
     const coordinates = document.createElement('p');
-    coordinates.textContent = `Koordinater: ${place.latitude}, ${place.longitude}`;
+
+    if (place.geometryType === "Polygon") {
+        coordinates.textContent = "Typ: Område";
+    } else {
+        coordinates.textContent =
+            `Koordinater: ${place.latitude}, ${place.longitude}`;
+    }
 
     div.append(title, category, description, coordinates);
     return div;
@@ -166,21 +182,74 @@ filterButtons.forEach(button => {
 
 });
 
+
+// Omvandlar en WKT-polygon till koordinater som Leaflet kan använda
+function parsePolygonWkt(wkt) {
+
+    const coordinatesText = wkt.match(
+        /^POLYGON\s*\(\((.*)\)\)$/i
+    );
+
+    if (!coordinatesText) {
+        return null;
+    }
+
+    return coordinatesText[1].split(',').map(pair => {
+
+        const [longitude, latitude] = pair.trim()
+            .split(/\s+/)
+            .map(Number);
+
+        // Leaflet använder latitud först
+        return [latitude, longitude];
+    });
+}
+
+
 //visar platser i listan på kartan
 function showPlaces(places) {
-    //tömmer listan
-    placesList.innerHTML = '';
-    //tar bort gamla markörer från kartan
-    markers.clearLayers();
-    //går igenom alla platser och lägger till dem i listan och på kartan
-    places.forEach(place => {
-        const marker = L.marker([place.latitude, place.longitude], {
-            icon: getMarkerIcon(place.category)
-        }
-        ).addTo(markers);
 
-        // Popup med platsens information
-        marker.bindPopup(popupFor(place));
+    // Tömmer listan
+    placesList.innerHTML = '';
+
+    // Tar bort gamla objekt från kartan
+    markers.clearLayers();
+    drawnItems.clearLayers();
+
+    // Går igenom alla sparade platser
+    places.forEach(place => {
+
+        let mapLayer;
+
+        // Kontrollerar om objektet är en polygon
+        if (place.geometryType === "Polygon" && place.wkt) {
+
+            const coordinates = parsePolygonWkt(place.wkt);
+
+            if (!coordinates) {
+                console.error("Ogiltig WKT:", place.wkt);
+                return;
+            }
+
+            // Skapar polygonen på kartan
+            mapLayer = L.polygon(coordinates, {
+                color: '#527B96',
+                fillColor: '#527B96',
+                fillOpacity: 0.3
+            }).addTo(drawnItems);
+
+        } else {
+
+            // Skapar en vanlig punktmarkör
+            mapLayer = L.marker(
+                [place.latitude, place.longitude],
+                { icon: getMarkerIcon(place.category) }
+            ).addTo(markers);
+
+        }
+
+        // Popup med information
+        mapLayer.bindPopup(popupFor(place));
 
         // Skapar ett listelement
         const listItem = document.createElement('li');
@@ -188,87 +257,106 @@ function showPlaces(places) {
 
         // Platsens namn
         const name = document.createElement('h3');
-        name.textContent = place.name;
+        //skapar en ikon beroende på vilken typ objektet har
+        const typeIcon = document.createElement('i');
+
+        if (place.geometryType === "Polygon") {
+            typeIcon.classList.add('fa-solid', 'fa-draw-polygon');
+        } else {
+            typeIcon.classList.add('fa-solid', 'fa-location-dot');
+        }
+
+        //lägger til en css klass för ikonen
+        typeIcon.classList.add('place-type-icon');
+        //lägger till ikonen och platsens namn
+        name.append(typeIcon, document.createTextNode(` ${place.name}`));
 
         // Platsens kategori
         const category = document.createElement('p');
         category.textContent = place.category;
-        //lägger till css klasser för kategoriernas uteende
         category.classList.add('place-category');
         category.classList.add(`category-${place.category.toLowerCase()}`);
 
-        // Samlar namn och kategori i en egen container
+        // Samlar namn och kategori
         const placeInfo = document.createElement('div');
         placeInfo.append(name, category);
 
-        // Skapar en container för kapparna
+        // Container för knapparna
         const actions = document.createElement('div');
         actions.classList.add('place-actions');
 
-        //skapar ändraknappen
+        // Ändra-knapp
         const editButton = document.createElement('button');
         editButton.textContent = 'Ändra';
 
-        //skapar ta bortknappen
+        // Ta bort-knapp
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Ta bort';
 
-        //lägger till knapparna i containern
         actions.append(editButton, deleteButton);
 
-        //klicket på ändraknappen
+        // Klick på Ändra
         editButton.addEventListener('click', (e) => {
+
             e.stopPropagation();
 
-            //sparar vilken plats som ska ändras
+            // Polygonredigering lägger vi till senare
+            if (place.geometryType === "Polygon") {
+                alert('Redigering av polygoner är ännu inte tillgänglig.');
+                return;
+            }
+
             editingPlaceId = place.id;
 
-            //fyller formuläret med platsens befintliga information
             document.getElementById('placeName').value = place.name;
             document.getElementById('placeCategory').value = place.category;
-            document.getElementById('placeDescription').value = place.description;
+            document.getElementById('placeDescription').value = place.description || '';
             document.getElementById('placeLatitude').value = place.latitude;
             document.getElementById('placeLongitude').value = place.longitude;
 
-            //ändrar rubriken på formuläret
             modal.querySelector('h2').textContent = 'Ändra plats';
             modal.classList.add('show');
-        })
+        });
 
-        //klicka på ta bort knappen
+        // Klick på Ta bort
         deleteButton.addEventListener('click', (e) => {
+
             e.stopPropagation();
 
-            // Sparar vilken plats som ska tas bort
             deletingPlaceId = place.id;
 
-            // Visar vilken plats användaren vill ta bort
             deletePlaceMessage.textContent =
                 `Vill du verkligen ta bort ${place.name}?`;
 
-            // Öppnar bekräftelserutan
             deletePlaceModal.classList.add('show');
         });
 
-        //lägger till information om knappar i "plats-kortet"
+        // Lägger till information och knappar
         listItem.append(placeInfo, actions);
-
         placesList.appendChild(listItem);
 
-        // Klick på platsen zoomar in på kartan
+        // Klick på listelementet zoomar in på objektet
         listItem.addEventListener('click', () => {
 
-            map.setView([
-                place.latitude,
-                place.longitude
-            ], 15);
+            if (place.geometryType === "Polygon") {
 
-            marker.openPopup();
+                map.fitBounds(mapLayer.getBounds());
 
+            } else {
+
+                map.setView([
+                    place.latitude,
+                    place.longitude
+                ], 15);
+
+            }
+
+            mapLayer.openPopup();
         });
 
     });
 }
+
 
 //användaren bekräftar borttagningen
 confirmDeleteButton.addEventListener('click', async () => {
@@ -298,6 +386,53 @@ searchInput.addEventListener('input', applyFilters);
 //klicka på knappen : lägg till plats
 addPlaceButton.addEventListener('click', () => {
     instructionModal.classList.add('show');
+});
+
+//klicka på knappen för att rita ett område
+drawPolygonButton.addEventListener('click', () => {
+    //aktiverar polygonritning
+    const polygonDrawer = new L.Draw.Polygon(map, {
+        shapeOptions: {
+            color: '#527B96',
+            fillColor: '#527B96',
+            fillOpacity: 0.3
+        },
+        allowIntersection: false,
+        showArea: true
+    });
+    polygonDrawer.enable();
+});
+
+//när användaren har ritat klart en polygon
+map.on(L.Draw.Event.CREATED, (e) => {
+    const layer = e.layer;
+    //sparar polygonen
+    drawnItems.addLayer(layer);
+    pendingPolygonLayer = layer;
+    //hämtar polygonens koordinater
+    const coordinates = layer.getLatLngs()[0];
+    //omvandlar koordinaterna till WKT-formatet
+    const wktCoordinates = coordinates.map(point =>
+        `${point.lng} ${point.lat}`
+    );
+    //avslutar polygonen genom att upprepa första koordinaten
+    wktCoordinates.push(wktCoordinates[0]);
+    //skapar WKT-strängen
+    pendingPolygonWkt = `POLYGON((${wktCoordinates.join(', ')}))`;
+
+    console.log("WTK:", pendingPolygonWkt);
+
+    //förbereder formuläret
+    editingPlaceId = null;
+    addPlaceForm.reset();
+
+    document.getElementById('placeLatitude').value = '';
+    document.getElementById('placeLongitude').value = '';
+
+    modal.querySelector('h2').textContent = 'Spara område';
+
+    //öppnar formuläret
+    modal.classList.add('show');
 });
 
 //knappen för att bekräfta instruktionen
@@ -332,6 +467,13 @@ cancelButton.addEventListener('click', () => {
     addPlaceForm.reset();
     editingPlaceId = null;
 
+    if (pendingPolygonLayer) {
+        drawnItems.removeLayer(pendingPolygonLayer);
+    }
+
+    pendingPolygonWkt = null;
+    pendingPolygonLayer = null;
+
     modal.querySelector('h2').textContent = 'Lägg till en plats';
 });
 
@@ -342,12 +484,19 @@ addPlaceForm.addEventListener('submit', async (e) => {
 
 
     //hämtar informationen från formuläret
+    const isPolygon = pendingPolygonWkt !== null;
+
     const newPlace = {
         name: document.getElementById('placeName').value,
         category: document.getElementById('placeCategory').value,
         description: document.getElementById('placeDescription').value,
-        latitude: parseFloat(document.getElementById('placeLatitude').value),
-        longitude: parseFloat(document.getElementById('placeLongitude').value)
+
+        latitude: isPolygon ? null :
+            parseFloat(document.getElementById('placeLatitude').value),
+        longitude: isPolygon ? null :
+            parseFloat(document.getElementById('placeLongitude').value),
+        wkt: isPolygon ? pendingPolygonWkt : null,
+        geometryType: isPolygon ? "Polygon" : "Point"
     };
 
     //kontrollerar om vi sk askapa eller ändra en plats
@@ -372,9 +521,13 @@ addPlaceForm.addEventListener('submit', async (e) => {
         addPlaceForm.reset();
         editingPlaceId = null;
 
+        //rensar information om evemtuell polygon
+        pendingPolygonWkt = null;
+        pendingPolygonLayer = null;
+
         await loadPlaces();
     } else {
-        alert('Det gick inte att spara platsen... Vänligen försök igen.');
+        alert('Det gick inte att spara platsen. Vänligen försök igen på nytt!');
     }
 });
 
