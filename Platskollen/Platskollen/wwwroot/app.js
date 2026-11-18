@@ -42,6 +42,9 @@ function getMarkerIcon(category) {
 
 const instructionModal = document.getElementById('mapInstructionModal');
 const instructionOkButton = document.getElementById('instructionOkButton');
+
+const instructionTitle = document.getElementById('instructionTitle');
+const instructionText = document.getElementById('instructionText');
 //hämtar formulärets element från HTML
 const addPlaceButton = document.getElementById('addPlaceButton');
 const modal = document.getElementById('addPlaceModal');
@@ -63,6 +66,8 @@ let editingPlaceId = null;
 
 let pendingPolygonWkt = null;
 let pendingPolygonLayer = null;
+
+let instructionMode = 'place';
 
 
 //bygger popup rutan med text content så att text från användaren aldrig tolkas som html
@@ -385,22 +390,18 @@ searchInput.addEventListener('input', applyFilters);
 
 //klicka på knappen : lägg till plats
 addPlaceButton.addEventListener('click', () => {
+    instructionMode = 'place';
+    instructionTitle.textContent = 'Lägg till en ny plats';
+    instructionText.textContent = 'Klicka på kartan för att välja var du vill placera din plats';
     instructionModal.classList.add('show');
 });
 
 //klicka på knappen för att rita ett område
 drawPolygonButton.addEventListener('click', () => {
-    //aktiverar polygonritning
-    const polygonDrawer = new L.Draw.Polygon(map, {
-        shapeOptions: {
-            color: '#527B96',
-            fillColor: '#527B96',
-            fillOpacity: 0.3
-        },
-        allowIntersection: false,
-        showArea: true
-    });
-    polygonDrawer.enable();
+    instructionMode = 'polygon';
+    instructionTitle.textContent = 'Rita ett område på kartan';
+    instructionText.textContent = 'Klicka på kartan för att markera hörnen på området du vill skapa -> klicka sedan på den första punkten igen för att avsluta ritningen.';
+    instructionModal.classList.add('show');
 });
 
 //när användaren har ritat klart en polygon
@@ -440,8 +441,23 @@ instructionOkButton.addEventListener('click', () => {
 
     instructionModal.classList.remove('show');
 
-    //aktiverar möjligheten att klicka på kartan
-    addingPlace = true;
+    //kontrollerar vilken funktion användaren har valt
+    if (instructionMode === 'place') {
+        //aktiverar möjligheten att lägga till en plats
+        addingPlace = true;
+    } else if (instructionMode === 'polygon') {
+        //aktiverar polygonritning
+        const polygonDrawer = new L.Draw.Polygon(map, {
+            shapeOptions: {
+                color: '#527B96',
+                fillColor: '#527B96',
+                fillOpacity: 0.3
+            },
+            allowIntersection: false,
+            showArea: true
+        });
+        polygonDrawer.enable();
+    }
 
 });
 

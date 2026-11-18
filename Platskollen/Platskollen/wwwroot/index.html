@@ -53,7 +53,7 @@
 
         <button id="addPlaceButton" class="add-place-button">
           <i class="fa-solid fa-location-dot"></i>
-          Lägg till plats</button>
+          Lägg till plats på kartan</button>
         <p class="section-description">Välj en position på kartan för att lägga till en ny plats</p>
 
         <button id="drawPolygonButton" class="draw-polygon-button">
@@ -103,8 +103,9 @@
   <!-- Informationsruta som visas när en användare vill lägga till en plats -->
   <div id="mapInstructionModal" class="modal">
     <div class="modal-content">
-      <h2>Lägg till en ny plats</h2>
-      <p>
+      <h2 id="instructionTitle">Lägg till en ny plats</h2>
+
+      <p id="instructionText">
         Klicka på kartan för att välja var du vill placera din nya plats.
       </p>
 

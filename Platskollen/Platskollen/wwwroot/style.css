@@ -164,13 +164,19 @@ h1 {
     background-color: #a9cbe4;
 }
 
-/*styling för platsnamnet*/
+/* styling för platsnamnet */
 .place-item h3 {
     margin: 0;
     font-size: 15px;
     font-weight: 600;
-    font-family: Arial, Helvetica, sans-serif;
     color: #34495A;
+}
+
+/* styling för platsnamn med ikon */
+.place-info h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 /*kategori*/
@@ -489,18 +495,6 @@ h1 {
     min-width: 0;
 }
 
-/*platsnamn och ikon*/
-.place-info h3 {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    margin: 0;
-    font-size: 15px;
-    font-weight: 600;
-    color: #34495A;
-}
-
 /* Kategorietiketten */
 .place-info .place-category {
     align-self: flex-start;
@@ -513,4 +507,14 @@ h1 {
     gap: 6px;
     align-items: center;
     flex-shrink: 0;
+}
+
+/*styla avståndet mellan ikonen och texten på knappen för att lägga till en plats på kartan*/
+.add-place-button i {
+    margin-right: 8px;
+}
+
+/*styla avståndet mellan ikonen och texten på knappen för att lägga till ett område på kartan*/
+.draw-polygon-button i {
+    margin-right: 8px;
 }
