@@ -22,10 +22,9 @@ function getMarkerIcon(category) {
     const colors = {
         'Boenden': 'violet',
         'Restaurang': 'red',
-        'Butik': 'orange',
+        'Butik': 'grey',
         'Utflyktsmål': 'green',
         'Aktiviteter': 'blue',
-        'Flygplats': 'grey',
         'Svampställe': 'gold'
     };
 
@@ -287,11 +286,17 @@ function showPlaces(places) {
 
         // Ändra-knapp
         const editButton = document.createElement('button');
-        editButton.textContent = 'Ändra';
+        editButton.innerHTML = '<i class="fa-solid fa-pen"></i>';
+        editButton.classList.add('edit-button');
+        editButton.title = 'Ändra plats';
+        editButton.setAttribute('aria-lable', 'Ändra plats');
 
         // Ta bort-knapp
         const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Ta bort';
+        deleteButton.innerHTML = '<i class="fa-solid fa-trash"></i>';
+        deleteButton.classList.add('delete-button');
+        deleteButton.title = 'Ta bort plats';
+        deleteButton.setAttribute('arial-label', 'Ta bort plats');
 
         actions.append(editButton, deleteButton);
 

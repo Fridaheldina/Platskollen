@@ -34,18 +34,16 @@ html, body {
     margin-top: 18px;
 }
 
-/*rubriki och sparade platser*/
-.section-heading {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-/*sökfältet*/
+/*styling för sökfältet*/
 .search-input {
     width: 100%;
     box-sizing: border-box;
+    padding: 12px 20px;
+    font-size: 16px;
     font-family: Arial, Helvetica, sans-serif;
+
+    border: 1px solid #cccccc;
+    border-radius: 25px;
 }
 
 /*den förklarande texten under knappen*/
@@ -96,21 +94,17 @@ h1 {
     gap: 8px;
 }
 
-/* Grundutseende för filterknapparna */
+/* Grundstyling för filterknapparna på kartan */
 .filter-button {
     background-color: white;
     color: #34495A;
-
-    border: 1px solid #cccccc;
-    border-radius: 25px;
-
-    padding: 10px 18px;
-
+    border: 1px solid;
+    border-radius: 20px;
+    padding: 8px 16px;
     font-size: 13px;
     font-family: Arial, Helvetica, sans-serif;
-
+    font-weight: 600;
     cursor: pointer;
-
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
@@ -124,16 +118,6 @@ h1 {
     background-color: #527B96;
     color: white;
     border-color: #527B96;
-}
-
-/*styling för sökrutan*/
-.search-input {
-    width: 100%;
-    padding: 12px 20px;
-    font-size: 16px;
-
-    border: 1px solid #cccccc;
-    border-radius: 25px;
 }
 
 /*styling på knappen*/
@@ -201,7 +185,6 @@ h1 {
 .place-category {
     display: inline-block;
     padding: 3px 9px;
-    border: none;
     border-radius: 10px;
     font-size: 12px;
     font-weight: 600;
@@ -223,9 +206,9 @@ h1 {
 }
 
 .category-butik {
-    color: #B85D12;
-    background-color: #FCEBD9;
-    border-color: #F0CCA6;
+    color: #586574;
+    background-color: #E2E8EE;
+    border-color: #C5D0DB;
 }
 
 .category-utflyktsmål {
@@ -240,48 +223,47 @@ h1 {
     border-color: #87D5EF;
 }
 
-.category-flygplats {
-    color: #586574;
-    background-color: #E2E8EE;
-    border-color: #C5D0DB;
-}
-
 .category-svampställe {
     color: #A87519;
     background-color: #eed9a7;
     border-color: #D5AE58;
 }
 
-/*styling för knapp inne i plats-korten*/
-.place-actions {
-    display: flex;
-    gap: 5px;
-    align-items: center;
-}
-
+/*ikonerna för att ändra och ta bort plats*/
 .place-actions button {
+    background: transparent;
     border: none;
-    border-radius: 6px;
-    padding: 8px 10px;
-    font-size: 12px;
+    padding: 6px;
     cursor: pointer;
-    font-weight: 600;
+    font-size: 18px;
+    border-radius: 6px;
 }
 
-/*ändra knappen*/
-.place-actions button:first-child {
-    background-color: #c8deee;
-    color: #34495A;
+/* Ändra - blå ikon */
+.place-actions .edit-button {
+    color: #527B96;
 }
 
-/* Ta bort-knappen */
-.place-actions button:last-child {
-    background-color: #f7d9d9;
-    color: #984646;
+/* Ta bort - röd ikon */
+.place-actions .delete-button {
+    color: #B65A5A;
 }
 
-.place-actions button:hover {
-    opacity: 0.8;
+/* Hover på ändra */
+.place-actions .edit-button:hover {
+    color: #344F66;
+    background-color: rgba(82, 123, 150, 0.10);
+}
+
+/* Hover på ta bort */
+.place-actions .delete-button:hover {
+    color: #963D3D;
+    background-color: rgba(182, 90, 90, 0.10);
+}
+
+/* Storlek på ikonerna */
+.place-actions button i {
+    font-size: 17px;
 }
 
 /*styla formuläret för att lägga till en plats på kartan*/
@@ -435,16 +417,6 @@ h1 {
     overflow: auto;
 }
 
-/*gemensam stling för kategoriknapparna*/
-.filter-button {
-    padding: 8px 16px;
-    border: 1px solid;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
 .filter-boenden {
     color: #7635A0;
     background-color: #F0E2F8;
@@ -458,9 +430,9 @@ h1 {
 }
 
 .filter-butik {
-    color: #B85D12;
-    background-color: #FCEBD9;
-    border-color: #F0CCA6;
+    color: #586574;
+    background-color: #E2E8EE;
+    border-color: #C5D0DB;
 }
 
 .filter-utflyktsmål {
@@ -473,12 +445,6 @@ h1 {
     color: #2475B5;
     background-color: #DFEDFA;
     border-color: #87D5EF;
-}
-
-.filter-flygplats {  
-    color: #586574;
-    background-color: #E2E8EE;
-    border-color: #C5D0DB;
 }
 
 .filter-svampställe {
