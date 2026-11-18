@@ -299,22 +299,17 @@ function showPlaces(places) {
         editButton.addEventListener('click', (e) => {
 
             e.stopPropagation();
-
-            // Polygonredigering lägger vi till senare
-            if (place.geometryType === "Polygon") {
-                alert('Redigering av polygoner är ännu inte tillgänglig.');
-                return;
-            }
-
             editingPlaceId = place.id;
 
             document.getElementById('placeName').value = place.name;
             document.getElementById('placeCategory').value = place.category;
             document.getElementById('placeDescription').value = place.description || '';
-            document.getElementById('placeLatitude').value = place.latitude;
-            document.getElementById('placeLongitude').value = place.longitude;
+            //om det är en punktplats så visas koordinaterna
+            //är det ett polygon så lämnas koordinaterna tomma
+            document.getElementById('placeLatitude').value = place.geometryType === "Point" ? place.latitude : '';
+            document.getElementById('placeLongitude').value = place.geometryType === "Point" ? place.longitude : '';
 
-            modal.querySelector('h2').textContent = 'Ändra plats';
+            modal.querySelector('h2').textContent = place.geometryType === "Polygon" ? 'Ändra område' : 'Ändra plats';
             modal.classList.add('show');
         });
 

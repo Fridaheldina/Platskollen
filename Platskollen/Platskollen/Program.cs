@@ -72,11 +72,11 @@ places.MapPut("/{id}", async (int id, Place input, PlaceDb db) =>
     var place = await db.Places.FindAsync(id);
     if (place is null) return Results.NotFound();
 
+    //uppdaterar endast information om platsen
     place.Name = input.Name;
     place.Category = input.Category;
     place.Description = input.Description;
-    place.Latitude = input.Latitude;
-    place.Longitude = input.Longitude;
+
     await db.SaveChangesAsync();
     return Results.NoContent();
 });
