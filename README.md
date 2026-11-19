@@ -1,9 +1,12 @@
 Information om platskollen:
-Platskollen är en webbaserad applikation där användaren kan utforska och hitta platser på en interaktiv karta.
+Platskollen är en webbaserad applikation där användaren kan spara, utforska och hitta intressanta platser och områden på en interaktiv karta. Applikationen gör det enkelt att samla sparade platser och områden i en gemensam lista, som användaren sedan kan använda sig av för att enkelt navigera till dom sparade platserna om områdena, även redigera eller ta bort som sparade objekten.
 
 Funktioner i applikationen:
 - Visa och utforska platser på en interaktiv karta
-- Lägga till nya platser som sparas i en lista
+- Lägga till nya platser genom att välja en position direkt på kartan
+- Lägga till nya områden genom att rita polygoner på kartan
+- Söka bland dom sparade platserna
+- Filtrera platser på kartan utifrån olika kategorier
 - Redigera dom sparade platserna
 - Ta bort en sparad plats
 
