@@ -1,10 +1,11 @@
 using System.Globalization;
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//anslutniingen till mysql
+//anslutniingen till sql server
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<PlaceDb>(options => options.UseSqlServer(connectionString, o => o.UseNetTopologySuite()));
 
@@ -76,6 +77,42 @@ places.MapPost("/", async (PlaceDto place, PlaceDb db) =>
     return Results.Created($"/api/places/{place.Id}", place);
 });
 
+//spatial sökning
+places.MapPost("/search", async (SearchRequest request, PlaceDb db) =>
+{
+    //1.läs request.Wkt till en Geometry och sätt SRID 4326
+    var reader = new WKTReader();
+    Geometry searchGeometry;
+
+    try
+    {
+        searchGeometry = reader.Read(request.Wkt);
+        searchGeometry.SRID = 4326;
+    }
+    catch (Exception)
+    {
+        return Results.BadRequest("Ogiltigt WKT-format...");
+    }
+
+    // //2.räkna om till ditt lagringssystem om det inte är WGS84
+    // const int targetSrid = 4326;
+    // if (searchGeometry.SRID != targetSrid)
+    // {
+    //     searchGeometry = TransformGeometry(searchGeometry, searchGeometry.SRID, targetSrid);
+    // }
+
+    //3. hämta platserna vars Geometry skär sökpolygonen 
+    var matchingPlaces = await db.Places
+    .Where(p => p.Geometry.Intersects(searchGeometry))
+    .ToListAsync();
+
+    //4.returnera dom i samma DTO som GET /api/places
+    var response = matchingPlaces.Select(p => p.ToDto());
+    
+    return Results.Ok(response);
+});
+
+
 //uppdatera en plats
 places.MapPut("/{id}", async (int id, Place input, PlaceDb db) =>
 {
@@ -103,3 +140,7 @@ places.MapDelete("/{id}", async (int id, PlaceDb db) =>
 });
 
 app.Run();
+
+//record för requesten
+record SearchRequest(string Wkt);
+

@@ -32,3 +32,11 @@ Content-Type: application/json
     "latitude": 65.8382,
     "longitude": 14.9190
 }
+
+### Hitta platser inom ett område
+POST {{host}}/api/places/search
+Content-Type: application/json
+
+ {
+    "wkt": "POLYGON ((15 65, 16 65, 16 66, 15 66, 15 65))"
+ }
