@@ -17,6 +17,9 @@ map.addLayer(drawnItems);
 //hämta knappaen för att rita polygoner
 const drawPolygonButton = document.getElementById('drawPolygonButton');
 
+//hämta knappen för att söka platser inom ett område
+const searchSpatialButton = document.getElementById('searchSpatialButton');
+
 //väljer färg på kartnålen beroende på vilken kategori som platsen tillhör
 function getMarkerIcon(category) {
     const colors = {
@@ -401,6 +404,14 @@ drawPolygonButton.addEventListener('click', () => {
     instructionMode = 'polygon';
     instructionTitle.textContent = 'Rita ett område på kartan';
     instructionText.textContent = 'Klicka på kartan för att markera hörnen på området du vill skapa -> klicka sedan på den första punkten igen för att avsluta ritningen.';
+    instructionModal.classList.add('show');
+});
+
+//klicka på knappen för att söka platser inom ett område
+searchSpatialButton.addEventListener('click', () => {
+    instructionMode = 'spatial';
+    instructionTitle.textContent = 'Sök platser inom ett område på kartan';
+    instructionText.textContent = 'Markera ett område för att hitta platserna som finns sparade på kartan inom detta område';
     instructionModal.classList.add('show');
 });
 

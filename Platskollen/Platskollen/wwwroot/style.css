@@ -419,7 +419,7 @@ h1 {
 
 /*scrollfunktion för listan på dom sparade platserna*/
 .places-container {
-    max-height: 750px;
+    max-height: 675px;
     overflow: auto;
 }
 
@@ -517,4 +517,27 @@ h1 {
 /*styla avståndet mellan ikonen och texten på knappen för att lägga till ett område på kartan*/
 .draw-polygon-button i {
     margin-right: 8px;
+}
+
+/*styla avståndet mellan ikonen och texten på knappen för att söka platser inom ett område på kartan*/
+.search-spatial-button i {
+    margin-right: 8px;
+}
+
+/*styling på "sök platser inom ett område" knappen*/
+.search-spatial-button {
+    width: 100%;
+    background-color: #527B96;
+    color: white;
+    padding: 15px 20px;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    border: none;
+    border-radius: 25px;
+
+    cursor: pointer;
+}
+
+.search-spatial-button:hover {
+    background-color: #405F76;
 }
