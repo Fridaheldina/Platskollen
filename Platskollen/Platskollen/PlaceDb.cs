@@ -9,4 +9,12 @@ public class PlaceDb : DbContext
     }
 
     public DbSet<Place> Places => Set<Place>();
+
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Place>()
+        .Property(p => p.Geometry)
+        .HasColumnType("geometry");
+    }
 }

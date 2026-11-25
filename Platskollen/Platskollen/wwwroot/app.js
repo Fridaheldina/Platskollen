@@ -301,7 +301,7 @@ function showPlaces(places) {
         deleteButton.innerHTML = '<i class="fa-solid fa-trash"></i>';
         deleteButton.classList.add('delete-button');
         deleteButton.title = 'Ta bort plats';
-        deleteButton.setAttribute('arial-label', 'Ta bort plats');
+        deleteButton.setAttribute('aria-label', 'Ta bort plats');
 
         actions.append(editButton, deleteButton);
 
@@ -421,7 +421,7 @@ map.on(L.Draw.Event.CREATED, (e) => {
     //skapar WKT-strängen
     pendingPolygonWkt = `POLYGON((${wktCoordinates.join(', ')}))`;
 
-    console.log("WTK:", pendingPolygonWkt);
+    console.log("WKT:", pendingPolygonWkt);
 
     //förbereder formuläret
     editingPlaceId = null;

@@ -1,18 +1,14 @@
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
 //anslutniingen till mysql
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<PlaceDb>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+builder.Services.AddDbContext<PlaceDb>(options => options.UseSqlServer(connectionString, o => o.UseNetTopologySuite()));
 
 var app = builder.Build();
-
-//skapar databasfilen först gången appen startar
-using (var scope = app.Services.CreateScope())
-{
-    scope.ServiceProvider.GetRequiredService<PlaceDb>().Database.EnsureCreated();
-}
 
 //Serverar index.html och app.js från mappen wwwroot
 app.UseDefaultFiles();
@@ -22,7 +18,7 @@ var places = app.MapGroup("/api/places");
 
 //hämtar alla platser
 places.MapGet("/", async (PlaceDb db) =>
-await db.Places.ToListAsync());
+    (await db.Places.AsNoTracking().ToListAsync()).Select(p => p.ToDto()));
 
 //hämtar en plats med ett id
 places.MapGet("/{id}", async (int id, PlaceDb db) =>
@@ -34,9 +30,14 @@ places.MapGet("/{id}", async (int id, PlaceDb db) =>
     : Results.NotFound();
 });
 
-//skapa plats
-places.MapPost("/", async (Place place, PlaceDb db) =>
+// skapa plats
+places.MapPost("/", async (PlaceDto place, PlaceDb db) =>
 {
+    Place placeDb = new();
+    placeDb.Name = place.Name;
+    placeDb.Category = place.Category;
+    placeDb.Description = place.Description;
+    placeDb.CreatedAt = DateTime.UtcNow;
 
     //kontrollerar vilken typ av objekt som skickas
     if (place.GeometryType == "Point")
@@ -45,7 +46,11 @@ places.MapPost("/", async (Place place, PlaceDb db) =>
         {
             return Results.BadRequest("En punkt måste ha latitude och longitud");
         }
-        place.Wkt = null;
+
+        var point = new WKTReader().Read(string.Format(CultureInfo.InvariantCulture, "POINT ({0} {1})", place.Longitude, place.Latitude)); // Hemavan, lon lat
+        point.SRID = 4326;
+
+        placeDb.Geometry = point;
     }
     else if (place.GeometryType == "Polygon")
     {
@@ -53,15 +58,20 @@ places.MapPost("/", async (Place place, PlaceDb db) =>
         {
             return Results.BadRequest("En polygon måste ha WKT-information");
         }
-        place.Latitude = null;
-        place.Longitude = null;
+
+        // Omvandla wkt till geometry
+        var polygon = new WKTReader().Read(place.Wkt);
+        polygon.SRID = 4326;
+
+        placeDb.Geometry = polygon;
+
     }
     else
     {
         return Results.BadRequest("Ogiltig geometrityp");
     }
-    place.CreatedAt = DateTime.UtcNow;
-    db.Places.Add(place);
+
+    db.Places.Add(placeDb);
     await db.SaveChangesAsync();
     return Results.Created($"/api/places/{place.Id}", place);
 });

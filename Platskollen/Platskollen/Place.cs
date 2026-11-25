@@ -1,3 +1,5 @@
+using NetTopologySuite.Geometries;
+
 public class Place
 {
     public int Id { get; set; }
@@ -5,11 +7,7 @@ public class Place
     public string Category { get; set; } = string.Empty;
     public string? Description { get; set; }
 
-    public double? Latitude { get; set; }
-    public double? Longitude { get; set; }
-
-    public string? Wkt { get; set; }
-    public string GeometryType { get; set;} = "Point";
+    public Geometry Geometry { get; set; } = null!;
 
     public DateTime CreatedAt { get; set; }
     
