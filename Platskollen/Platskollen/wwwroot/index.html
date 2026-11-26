@@ -49,22 +49,25 @@
 
       <section class="sidebar-section add-place-section">
         <hr>
-        <h2 class="section-title">Lägg till en ny plats</h2>
+        <h2 class="section-title">Lägg till eller sök platser inom ett område</h2>
 
         <button id="addPlaceButton" class="add-place-button">
-          <i class="fa-solid fa-location-dot"></i>
+          <i class="fa-solid fa-location-dot button-icon"></i>
           Lägg till plats på kartan</button>
         <p class="section-description">Välj en position på kartan för att lägga till en ny plats</p>
 
-        <button id="drawPolygonButton" class="draw-polygon-button">
-          <i class="fa-solid fa-draw-polygon"></i>
-          Rita område på kartan</button>
-        <p class="section-description">Markera ut ett område på kartan för att lägga till ett nytt område</p>
+        <div class="area-action">
+          <button id="drawPolygonButton" class="draw-polygon-button">
+            <i class="fa-solid fa-draw-polygon button-icon"></i>
+            Rita område på kartan</button>
+          <p class="section-description">Markera ut ett område på kartan för att lägga till ett nytt område</p>
 
-        <button id="searchSpatialButton" class="search-spatial-button">
-          <i class="fa-solid fa-magnifying-glass-location"></i>
-          Sök platser inom ett område</button>
-        <p class="section-description">Markera ett område på kartan för att hitta platserna inom det ritade området</p>
+          <button id="searchSpatialButton" class="search-spatial-button">
+            <i class="fa-solid fa-magnifying-glass-location button-icon"></i>
+            Sök platser inom ett område</button>
+          <p class="section-description">Markera ett område på kartan för att hitta platserna inom det ritade området
+          </p>
+        </div>
       </section>
 
     </aside>

@@ -416,7 +416,7 @@ searchSpatialButton.addEventListener('click', () => {
 });
 
 //när användaren har ritat klart en polygon
-map.on(L.Draw.Event.CREATED, (e) => {
+map.on(L.Draw.Event.CREATED, async (e) => {
     const layer = e.layer;
     //sparar polygonen
     drawnItems.addLayer(layer);
@@ -433,6 +433,38 @@ map.on(L.Draw.Event.CREATED, (e) => {
     pendingPolygonWkt = `POLYGON((${wktCoordinates.join(', ')}))`;
 
     console.log("WKT:", pendingPolygonWkt);
+
+    if (instructionMode === 'spatial') {
+
+    console.log("Spatial sökning vald");
+
+    // Skickar sökpolygonen till API:et
+    const response = await fetch('/api/places/search', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            wkt: pendingPolygonWkt
+        })
+    });
+
+    // Kontrollerar om sökningen lyckades
+    if (!response.ok) {
+        alert("Det gick inte att genomföra den spatiala sökningen.");
+        return;
+    }
+
+    // Hämtar platserna som API:et returnerar
+    const matchingPlaces = await response.json();
+
+    console.log("Träffar:", matchingPlaces);
+
+    // Visar sökresultatet på kartan och i listan
+    showPlaces(matchingPlaces);
+
+    return;
+}
 
     //förbereder formuläret
     editingPlaceId = null;
@@ -468,7 +500,19 @@ instructionOkButton.addEventListener('click', () => {
             showArea: true
         });
         polygonDrawer.enable();
-    }
+
+    } else if (instructionMode === 'spatial') {
+        const polygonDrawer = new L.Draw.Polygon(map, {
+            shapeOptions: {
+                color: '#527B96',
+                fillColor: '#527B96',
+                fillOpacity: 0.3
+            },
+            allowIntersection: false,
+            showArea: true
+        }); 
+        polygonDrawer.enable();
+    }    
 
 });
 
