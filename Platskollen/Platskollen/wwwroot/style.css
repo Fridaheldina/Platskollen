@@ -120,23 +120,6 @@ h1 {
     border-color: #527B96;
 }
 
-/*styling på knappen*/
-.add-place-button {
-    width: 100%;
-    background-color: #527B96;
-    color: white;
-    padding: 15px 20px;
-    font-size: 14px;
-    font-family: Arial, Helvetica, sans-serif;
-    border: none;
-    border-radius: 25px;
-
-    cursor: pointer;
-}
-
-.add-place-button:hover {
-    background-color: #405F76;
-}
 
 /*lista med dom sparade platserna*/
 #placesList {
@@ -419,7 +402,7 @@ h1 {
 
 /*scrollfunktion för listan på dom sparade platserna*/
 .places-container {
-    max-height: 665px;
+    max-height: 750px;
     overflow: auto;
 }
 
@@ -457,24 +440,6 @@ h1 {
     color: #A87519;
     background-color: #eed9a7;
     border-color: #D5AE58;
-}
-
-/*styling på "ritra område på kartan" knappen*/
-.draw-polygon-button {
-    width: 100%;
-    background-color: #527B96;
-    color: white;
-    padding: 15px 20px;
-    font-size: 14px;
-    font-family: Arial, Helvetica, sans-serif;
-    border: none;
-    border-radius: 25px;
-
-    cursor: pointer;
-}
-
-.draw-polygon-button:hover {
-    background-color: #405F76;
 }
 
 /*ikon för punkplatser och polygoner*/
@@ -524,24 +489,54 @@ h1 {
     margin-right: 8px;
 }
 
-/*styling på "sök platser inom ett område" knappen*/
+.button-icon {
+    font-size: 18px;
+}
+
+/*styling för knapparna gällande områdena*/
+.area-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.area-action {
+    min-width: 0;
+}
+
+.add-place-button {
+    margin-top: 8px;
+}
+
+/*styling knapparna*/
+.add-place-button,
+.draw-polygon-button,
 .search-spatial-button {
     width: 100%;
+    min-height: 55px;
+    padding: 10px 8px;
+
     background-color: #527B96;
     color: white;
-    padding: 15px 20px;
-    font-size: 14px;
-    font-family: Arial, Helvetica, sans-serif;
+
     border: none;
-    border-radius: 25px;
+    border-radius: 12px;
+
+    font-size: 13px;
+    font-family: Arial, Helvetica, sans-serif;
 
     cursor: pointer;
 }
 
-.search-spatial-button:hover {
+.add-place-button:hover,
+.draw-polygon-button:hover,
+.search-spatial-button:hover{
     background-color: #405F76;
 }
 
-.button-icon {
-    font-size: 18px;
+/*beskrivande texterna */
+.area-action .section-description {
+    margin-top: 6px;
+    line-height: 1.4;
 }

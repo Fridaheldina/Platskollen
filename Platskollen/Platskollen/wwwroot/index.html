@@ -54,58 +54,58 @@
         <button id="addPlaceButton" class="add-place-button">
           <i class="fa-solid fa-location-dot button-icon"></i>
           Lägg till plats på kartan</button>
-        <p class="section-description">Välj en position på kartan för att lägga till en ny plats</p>
 
-        <div class="area-action">
-          <button id="drawPolygonButton" class="draw-polygon-button">
-            <i class="fa-solid fa-draw-polygon button-icon"></i>
-            Rita område på kartan</button>
-          <p class="section-description">Markera ut ett område på kartan för att lägga till ett nytt område</p>
+        <div class="area-actions">
+          <div class="area-action">
+            <button id="drawPolygonButton" class="draw-polygon-button">
+              <i class="fa-solid fa-draw-polygon button-icon"></i>
+              Rita område på kartan</button>
+          </div>
 
-          <button id="searchSpatialButton" class="search-spatial-button">
-            <i class="fa-solid fa-magnifying-glass-location button-icon"></i>
-            Sök platser inom ett område</button>
-          <p class="section-description">Markera ett område på kartan för att hitta platserna inom det ritade området
-          </p>
+          <div class="area-action">
+            <button id="searchSpatialButton" class="search-spatial-button">
+              <i class="fa-solid fa-magnifying-glass-location button-icon"></i>
+              Sök platser inom ett område</button>
+          </div>
         </div>
-      </section>
+  </section>
 
-    </aside>
+  </aside>
 
-    <main class="map-container">
-      <div class="map-filters">
+  <main class="map-container">
+    <div class="map-filters">
 
-        <button class="filter-button active" data-category="all">
-          Alla
-        </button>
+      <button class="filter-button active" data-category="all">
+        Alla
+      </button>
 
-        <button class="filter-button filter-boenden" data-category="Boenden">
-          Boenden
-        </button>
+      <button class="filter-button filter-boenden" data-category="Boenden">
+        Boenden
+      </button>
 
-        <button class="filter-button filter-restaurang" data-category="Restaurang">
-          Restauranger
-        </button>
+      <button class="filter-button filter-restaurang" data-category="Restaurang">
+        Restauranger
+      </button>
 
-        <button class="filter-button filter-butik" data-category="Butik">
-          Butiker
-        </button>
+      <button class="filter-button filter-butik" data-category="Butik">
+        Butiker
+      </button>
 
-        <button class="filter-button filter-utflyktsmål" data-category="Utflyktsmål">
-          Utflyktsmål
-        </button>
+      <button class="filter-button filter-utflyktsmål" data-category="Utflyktsmål">
+        Utflyktsmål
+      </button>
 
-        <button class="filter-button filter-aktiviteter" data-category="Aktiviteter">
-          Aktiviteter
-        </button>
+      <button class="filter-button filter-aktiviteter" data-category="Aktiviteter">
+        Aktiviteter
+      </button>
 
-        <button class="filter-button filter-svampställe" data-category="Svampställe">
-          Svampställe
-        </button>
+      <button class="filter-button filter-svampställe" data-category="Svampställe">
+        Svampställe
+      </button>
 
-      </div>
-      <div id="map"></div>
-    </main>
+    </div>
+    <div id="map"></div>
+  </main>
   </div>
 
   <!-- Informationsruta som visas när en användare vill lägga till en plats -->
